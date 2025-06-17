@@ -1,96 +1,108 @@
-Veri Bilimi 101 Notları
-📉 RMSE (Root Mean Squared Error – Kök Ortalama Kare Hatası)
+# 📘 Bluebook for Bulldozers – Regresyon Projesi
 
-Tanım: Gerçek değerle tahmin arasındaki farkların karesinin ortalamasının kareköküdür.
+Bu proje, Kaggle üzerindeki [Bluebook for Bulldozers](https://www.kaggle.com/competitions/bluebook-for-bulldozers/data) veri seti kullanılarak, ikinci el iş makinelerinin satış fiyatlarının tahmin edilmesini amaçlayan bir regresyon analizidir. Proje boyunca temel veri bilimi kavramları, hata metrikleri ve makine öğrenmesi algoritmaları uygulanmıştır.
 
-Küçükse: Tahminlerin gerçek değerlere daha yakındır.
+---
 
-Formül: rmse.png
+## 🎯 Proje Amacı
 
-Özelliği: Büyük hataları daha fazla cezalandırır çünkü karesini alır.
+- Eksik ve kategorik verilerle çalışmayı öğrenmek
+- Regresyon problemleri için uygun modelleri seçmek
+- Model başarısını değerlendirmek için uygun metrikleri kullanmak
+- RMSE, RMSLE, R² gibi regresyon metriklerini anlamak
+- Decision Tree gibi algoritmaları uygulamak
 
-🌲 Decision Tree (Karar Ağacı)
+---
 
-Tanım: Verileri dallara ayırarak karar veren bir makine öğrenmesi algoritmasıdır.
+## 📊 Kullanılan Kavramlar
 
-Ne işe yarar?: Sınıflandırma (classification) ve regresyon (regression) problemlerinde kullanılır.
+### 🔹 RMSE (Root Mean Squared Error)
+Gerçek değer ile tahmin arasındaki farkların karesinin ortalamasının kareköküdür.  
+**Özelliği:** Büyük hataları daha fazla cezalandırır.
 
-Nasıl çalışır?: Veriyi böle böle (if-else gibi) bir ağaç yapısı oluşturur.
+### 🔹 RMSLE (Root Mean Squared Logarithmic Error)
+Tahmin ve gerçek değerlerin logaritmalarının farklarının karesinin ortalamasının kareköküdür.  
+**Ne zaman kullanılır?** Değerler çok büyükse ve oransal hata önemliyse tercih edilir.
 
-Örn: "Eğer yaş < 18 ise → çocuk sınıfı, değilse → yetişkin"
+### 🔹 R² (R-Kare)
+Regresyon modelinin başarı oranını gösterir. 1'e yaklaştıkça model daha iyidir.  
+**Not:** Kategorik problemler için geçerli değildir.
 
-⛰️ Local Optimum (Yerel En İyi) Tanım: Bir modelin eğitim sırasında ulaştığı, çevresine göre en iyi ama globalde en iyi olmayan sonuç noktasıdır.
+---
 
-Problem nedir?: Model bu noktaya "takılabilir", daha iyi bir sonuç potansiyelini kaçırabilir.
+## 🌳 Kullanılan Algoritmalar
 
-Örnek: Dağlık bir arazide küçük bir tepeye tırmandığını düşün; en yüksek nokta orası olmayabilir ama orada durursun.
+### ✅ Decision Tree Regressor
+- Veriyi if-else blokları gibi dallara ayırarak öğrenir.
+- Hem regresyon hem sınıflandırma problemlerinde kullanılır.
+- Aşırı öğrenmeye (overfitting) meyilli olabilir.
 
-🧮 RMSLE (Root Mean Squared Logarithmic Error – Kök Ortalama Logaritmik Kare Hatası)
+---
 
-Tanım: RMSE'nin logaritmalı versiyonudur.
+## 🔧 Veri Ön İşleme
 
-Ne zaman kullanılır?: Hedef değişken çok büyük sayılardan oluşuyorsa ve oransal hataları ölçmek istiyorsan.
+- `SalesID`, `MachineID` gibi tahmin için gereksiz sütunlar çıkarıldı.
+- Eksik veriler analiz edilerek dolduruldu veya çıkarıldı.
+- Kategorik veriler label encoding veya one-hot encoding ile dönüştürüldü.
+- Tarih formatları (örn. `saledate`) zaman bileşenlerine ayrıldı (yıl, ay, gün).
 
-Avantajı:Küçük farkları fazla önemsemez, büyük değerlerdeki oransal hataları dikkate alır.
+---
 
-📊 R² (R-kare) Nedir?
+## ⚙️ Modelleme Adımları
 
-R² (Determination Coefficient – Belirleme Katsayısı), bir regresyon modelinin tahminlerinin ne kadar başarılı olduğunu ölçen bir metriktir.
+1. Veriyi Train/Validation/Test olarak böldüm.
+2. Decision Tree modelini `max_depth` hiperparametresiyle eğittim.
+3. Modeli RMSE ve RMSLE metrikleri ile değerlendirdim.
+4. R² skoru ile genel başarıyı inceledim.
+5. Kategorik değişken dönüşümleri ve eksik veri stratejileri denedim.
 
-✅ Örnek: Diyelim bir ev fiyatı modelin var ve:
+---
 
-Gerçek fiyatlar: [100k, 150k, 200k]
+## 🧠 Öğrenilenler
 
-Model tahminleri: [110k, 140k, 195k]
+| Konsept | Açıklama |
+|--------|----------|
+| **Subsample** | Her modellemede verinin sadece belli bir oranını kullanarak aşırı öğrenmeyi önlemek |
+| **Random Feature Selection** | Her dalda tüm değişkenler yerine rastgele alt küme seçimi |
+| **Hyperparameters** | Modelin dış ayarları – kullanıcı tarafından belirlenir (örn. `max_depth`, `n_estimators`) |
+| **Local Optimum** | Modelin iyi ama globalde en iyi olmayan noktaya takılması |
 
-Modelin hatası düşükse, R² → 1'e yaklaşır. Model rastgele sallıyorsa, R² → 0 hatta negatif olur.
+---
 
-Yüksek R² her zaman iyi bir model anlamına gelmez (özellikle aşırı öğrenmede / overfitting).
+## 🔗 Veri Setine Erişim
 
-Kategorik verilerde R² kullanılmaz, sadece regresyonda geçerlidir.
+👉 [Bluebook for Bulldozers – Kaggle](https://www.kaggle.com/competitions/bluebook-for-bulldozers/data)
 
-Kategorik ve Eksik Veri Problemi
+> ⚠️ Not: Kaggle'dan veri indirebilmek için hesabınızdan **Phone Verification** yapmanız gerekmektedir.
 
-❓1. Kategorik problem Nedir?
+---
 
-Makine öğrenmesi algoritmaları genellikle sayısal (numeric) verilerle çalışır.
+## 📎 Kullanılan Araçlar
 
-Ama birçok veri kümesinde kategorik sütunlar vardır: örn. cinsiyet = "Erkek", şehir = "Ankara"
+- Python 3.x
+- Jupyter Notebook
+- pandas, numpy
+- scikit-learn
+- matplotlib, seaborn
 
-⚠️ Problem: Bu tür verileri doğrudan modele verirsen hata alırsın
+---
 
-❓ 2. Eksik Veri Problemi (Missing Data) Nedir?
+## 📈 Devam İçin Öneriler
 
-Verinin bazı hücreleri boş olabilir: örn. yaş, gelir, maaş eksik vs.
+- XGBoost veya LightGBM ile performansı karşılaştır
+- Hiperparametre optimizasyonu için `GridSearchCV` uygula
+- Outlier analizi ve veri standardizasyonu ile sonuçları iyileştir
 
-⚠️ Problem: Birçok makine öğrenmesi algoritması boş (NaN) değerlerle çalışamaz.
+---
 
-✅ Sonuç Problem Türü Neden Önemli? Ne Yapmalı?
+## 🗃️ Not Defteri
 
-Kategorik Veri Sayıya çevrilmezse model çalışmaz One-hot / Label encoding
+Bu projede ayrıca aşağıdaki temel kavramlara dair kişisel notlarımı tuttum:
 
-Eksik Veri Model çöker ya da yanılır Sil, doldur ya da tahmin et
+- RMSE, RMSLE, R² açıklamaları
+- Decision Tree algoritma mantığı
+- Kategorik ve eksik veriyle başa çıkma yolları
+- Subsampling ve rastgele özellik seçimi gibi teknikler
 
-🔍 Subsample Nedir?
+---
 
-Subsample, genellikle Boosting algoritmalarında (özellikle Gradient Boosting ve XGBoost gibi) kullanılan bir hiperparametredir. Bu parametre, her ağaç oluşturulurken eğitim verisinin ne kadarının kullanılacağını belirler.
-
-subsample genellikle 0.5–1.0 aralığında seçilir.
-
-Çok düşük bir değer (örn. 0.1) modele yetersiz bilgi verir, underfitting yaşanabilir.
-
-Hyperparameters
-
-Bir makine öğrenmesi modelini eğitmeden önce dışarıdan bizim belirlediğimiz ayarlardır. Modelin nasıl öğrenmesini istediğimizi kontrol ederler.
-
-🎲 Random Feature Selection (Rastgele Özellik Seçimi) Nedir?
-
-Random Feature Selection, bir makine öğrenmesi algoritmasının her karar adımında ya da model kurulumunda tüm özellikler yerine rastgele seçilmiş bazı özellikleri kullanmasıdır.
-
-Proje
-Veri setine bu linkten ulaşabilirsiniz:
-
-🔗 https://www.kaggle.com/competitions/bluebook-for-bulldozers/data
-
-Veri setini indirebilmek için kaggle hesabınızın "Settings" kısmından "Phone verification" yapmanız gerekmektedir.
-Aksi takdirde veri setini indiremezsiniz.
